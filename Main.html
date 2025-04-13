@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Delivery from Zeke</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-color: white;
+        }
+
+        /* Enhanced Balloon Styles */
+        .balloon {
+            position: fixed;
+            font-size: 30px;
+            z-index: -1;
+            animation: floatUp 8s linear forwards;
+            user-select: none;
+            pointer-events: none;
+            color: #1e90ff; /* Dodger blue */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            filter: brightness(1.1);
+            bottom: -100px; /* Start below screen */
+        }
+        
+        /* Different blue shades for variety */
+        .balloon.color2 { color: #00bfff; } /* Deep sky blue */
+        .balloon.color3 { color: #4169e1; } /* Royal blue */
+        .balloon.color4 { color: #4682b4; } /* Steel blue */
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(20px) rotate(10deg);
+            }
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Rest of your existing CSS... */
+        .container {
+            max-width: 90%;
+            width: 100%;
+            padding: 20px;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .cat-image {
+            max-width: 80%;
+            height: auto;
+            max-height: 50vh;
+            margin: 10px auto;
+            display: block;
+            opacity: 0;
+            transform: translateY(50px) rotate(-5deg);
+            animation: catEntrance 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes catEntrance {
+            0% { opacity: 0; transform: translateY(50px) rotate(-5deg); }
+            70% { opacity: 1; transform: translateY(-10px) rotate(2deg); }
+            100% { opacity: 1; transform: translateY(0) rotate(0); }
+        }
+
+        .speech-bubble {
+            position: relative;
+            background: #d4f1ff;
+            border-radius: 20px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #a8d8ff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            opacity: 0;
+            animation: bubblePop 0.6s ease-out 0.8s forwards;
+        }
+
+        @keyframes bubblePop {
+            0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+            80% { transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background-color: #f00;
+            opacity: 0;
+            z-index: 0;
+            top: -20px;
+            animation: confettiFall 4s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .message {
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 280px;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        #thankYouBtn { background-color: #00bbff; }
+        #thankYouBtn:hover { background-color: #0088ff; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        #sorryBtn { background-color: #00bbff; }
+        #sorryBtn:hover { background-color: #0088ff; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        #infoBtn { background-color: #00bbff; margin-top: 8px; }
+        #infoBtn:hover { background-color: #0088ff; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+
+        .signature {
+            margin-top: 20px;
+            font-style: italic;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .audio-player {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container { max-width: 95%; padding: 15px; }
+            .cat-image { max-height: 40vh; }
+            .balloon { font-size: 24px; }
+        }
+
+        @media (orientation: landscape) {
+            .container { max-width: 70%; }
+            .cat-image { max-height: 60vh; }
+        }
+
+        @media (max-width: 400px) {
+            .message { font-size: 1rem; }
+            .btn { padding: 8px 16px; font-size: 0.9rem; }
+            .signature { font-size: 0.9rem; }
+            .balloon { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Audio elements -->
+        <audio class="audio-player" id="thankYouSound">
+            <source src="zekemeow.mp3" type="audio/mpeg">
+        </audio>
+        <audio class="audio-player" id="entranceSound" preload="auto">
+            <source src="https://assets.mixkit.co/sfx/preview/mixkit-cat-meow-119.mp3" type="audio/mpeg">
+        </audio>
+        <audio class="audio-player" id="confettiSound" preload="auto">
+            <source src="https://assets.mixkit.co/sfx/preview/mixkit-happy-pop-2062.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="bgMusic" loop>
+            <source src="HBDSONG.mp3" type="audio/mpeg">
+        </audio>
+
+        <img src="zeke5test.png" alt="Zeke the cat holding a letter" class="cat-image">
+        
+        <div class="speech-bubble">
+            <div class="message">
+                Happy Birthday Arianah! 🎊, I have a special gift for you from Shen. Enjoy your day! Before clicking the buttons below Click me for a suprise make sure to turn up the volume! 🎉
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button class="btn" id="thankYouBtn">Thank you, I truly appreciate your efforts. (Receive Gift)</button>
+            <button class="btn" id="sorryBtn">Sorry, I'm really busy right now. I'll check it later when I have some free time.</button>
+            <button class="btn" id="infoBtn">Curious about how Shen made this? Click here!</button>
+        </div>
+        
+        <div class="signature">
+            - Zeke 🐾
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create initial burst of balloons
+            function createInitialBalloons() {
+                const balloonCount = 30; // Larger initial burst
+                const colors = ['', 'color2', 'color3', 'color4'];
+                
+                for (let i = 0; i < balloonCount; i++) {
+                    createBalloon(colors[Math.floor(Math.random() * colors.length)]);
+                }
+            }
+            
+            // Continuous balloon creation
+            function createContinuousBalloons() {
+                const colors = ['', 'color2', 'color3', 'color4'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                createBalloon(color);
+                setTimeout(createContinuousBalloons, 500); // New balloon every 0.5s
+            }
+            
+            // Single balloon creation
+            function createBalloon(colorClass) {
+                const balloon = document.createElement('div');
+                balloon.className = `balloon ${colorClass}`;
+                balloon.textContent = '🎈';
+                
+                // Random properties
+                const left = Math.random() * 100;
+                const duration = 6 + Math.random() * 7;
+                const size = 20 + Math.random() * 30;
+                
+                balloon.style.left = `${left}%`;
+                balloon.style.animationDuration = `${duration}s`;
+                balloon.style.fontSize = `${size}px`;
+                
+                document.body.appendChild(balloon);
+                
+                // Remove balloon after animation completes
+                setTimeout(() => {
+                    balloon.remove();
+                }, duration * 1000);
+            }
+            
+            // Start balloon animations
+            createInitialBalloons(); // Big initial burst
+            setTimeout(createContinuousBalloons, 2000); // Start continuous flow after initial burst
+            
+            // Background music setup
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.volume = 1;
+            
+            setTimeout(() => {
+                bgMusic.play().catch(e => {
+                    document.body.addEventListener('click', function musicInteraction() {
+                        bgMusic.play();
+                        document.body.removeEventListener('click', musicInteraction);
+                    }, { once: true });
+                });
+            }, 500);
+
+            // Play entrance sound when Zeke appears
+            setTimeout(() => {
+                const entranceSound = document.getElementById('entranceSound');
+                entranceSound.play().catch(e => console.log("Entrance sound prevented:", e));
+            }, 300);
+
+            // Create confetti effect
+            createConfetti();
+
+            const thankYouBtn = document.getElementById('thankYouBtn');
+            const sorryBtn = document.getElementById('sorryBtn');
+            const infoBtn = document.getElementById('infoBtn');
+            const thankYouSound = document.getElementById('thankYouSound');
+            
+            thankYouBtn.addEventListener('click', function() {
+                thankYouSound.currentTime = 0;
+                thankYouSound.play().catch(e => console.log("Sound play prevented:", e));
+                createHearts();
+                setTimeout(() => {
+                    window.location.href = "thank-you-for-your-time.html";
+                }, 1000);
+            });
+            
+            sorryBtn.addEventListener('click', function() {
+                createSadCats();
+                setTimeout(() => {
+                    alert("Zeke looks disappointed but nods understandingly.");
+                }, 1000);
+            });
+            
+            infoBtn.addEventListener('click', function() {
+                createInfoStars();
+                setTimeout(() => {
+                    alert("Zeke whispers: 'This is a special birthday message from Shen! 🎂'");
+                }, 1000);
+            });
+            
+            function createConfetti() {
+                const confettiSound = document.getElementById('confettiSound');
+                confettiSound.play().catch(e => console.log("Confetti sound prevented:", e));
+                
+                const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff8800', '#8800ff'];
+                const confettiCount = 150;
+                const shapes = ['circle', 'square', 'triangle'];
+                
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    const size = Math.random() * 12 + 6;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const left = Math.random() * window.innerWidth;
+                    const animationDuration = Math.random() * 3 + 3;
+                    const delay = Math.random() * 1.5;
+                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                    
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    confetti.style.backgroundColor = color;
+                    confetti.style.left = `${left}px`;
+                    confetti.style.animationDuration = `${animationDuration}s`;
+                    confetti.style.animationDelay = `${delay}s`;
+                    
+                    if (shape === 'circle') {
+                        confetti.style.borderRadius = '50%';
+                    } else if (shape === 'triangle') {
+                        confetti.style.width = '0';
+                        confetti.style.height = '0';
+                        confetti.style.backgroundColor = 'transparent';
+                        confetti.style.borderLeft = `${size/2}px solid transparent`;
+                        confetti.style.borderRight = `${size/2}px solid transparent`;
+                        confetti.style.borderBottom = `${size}px solid ${color}`;
+                    }
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, (animationDuration + delay) * 1000);
+                }
+            }
+            
+            function createHearts() {
+                for (let i = 0; i < 20; i++) {
+                    createFloatingElement('🩵');
+                }
+            }
+            
+            function createSadCats() {
+                for (let i = 0; i < 20; i++) {
+                    createFloatingElement('😿');
+                }
+            }
+            
+            function createInfoStars() {
+                for (let i = 0; i < 20; i++) {
+                    createFloatingElement('✨');
+                }
+            }
+            
+            function createFloatingElement(emoji) {
+                const float = document.createElement('div');
+                float.textContent = emoji;
+                float.style.position = 'fixed';
+                float.style.fontSize = (20 + Math.random() * 20) + 'px';
+                float.style.left = Math.random() * window.innerWidth + 'px';
+                float.style.top = window.innerHeight + 'px';
+                float.style.opacity = '0';
+                float.style.transition = 'all 2s ease-out';
+                float.style.zIndex = '1000';
+                float.style.pointerEvents = 'none';
+                
+                document.body.appendChild(float);
+                
+                setTimeout(() => {
+                    float.style.opacity = '1';
+                    float.style.top = '-50px';
+                    float.style.transform = 'translateX(' + (Math.random() * 200 - 100) + 'px)';
+                }, 10);
+                
+                setTimeout(() => {
+                    float.remove();
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

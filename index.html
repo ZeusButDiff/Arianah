@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Countdown</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #e6f7ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            text-align: center;
+            overflow: hidden;
+            touch-action: manipulation;
+            background-image: radial-gradient(circle at center, #b3e0ff 0%, #e6f7ff 100%);
+            position: relative;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(3px);
+            border-radius: 16px;
+            padding: clamp(20px, 5vw, 30px);
+            box-shadow: 0 8px 32px rgba(0, 120, 200, 0.1);
+            width: 92%;
+            max-width: 420px;
+            margin: 20px auto;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            min-height: 400px;
+        }
+        
+        h1 {
+            font-size: clamp(1.5rem, 6vw, 2rem);
+            margin-bottom: 15px;
+            line-height: 1.4;
+            color: #0066cc;
+            font-weight: 600;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: space-between;
+            gap: clamp(8px, 2vw, 12px);
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-item {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 12px 5px;
+            min-width: 22%;
+            flex: 1;
+            box-shadow: 0 4px 8px rgba(0, 90, 180, 0.1);
+            border: 1px solid rgba(0, 120, 200, 0.1);
+        }
+        
+        .countdown-number {
+            font-size: clamp(1.5rem, 8vw, 2.2rem);
+            font-weight: bold;
+            margin-bottom: 3px;
+            color: #0077dd;
+        }
+        
+        .countdown-label {
+            font-size: clamp(0.7rem, 3vw, 0.85rem);
+            color: #6699cc;
+            font-weight: 500;
+        }
+        
+        .message {
+            font-size: clamp(0.9rem, 4vw, 1.1rem);
+            margin: 20px 0;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        /* Button Styles */
+        .proceed-button {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 105, 105, 0.3);
+            margin: 15px auto;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: block;
+            width: 80%;
+            max-width: 220px;
+            position: relative;
+        }
+        
+        .proceed-button.ready {
+            background: linear-gradient(135deg, #4da6ff, #0077dd);
+            box-shadow: 0 4px 15px rgba(0, 120, 200, 0.3);
+        }
+        
+        .wait-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            border-radius: 10px;
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            display: none;
+            animation: fadeInOut 3s ease;
+            white-space: nowrap;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            80% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background-color: #4da6ff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+            border-radius: 50%;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .heart {
+            color: #ff6b6b;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ello this is what i've been spending my time<span class="heart">🐾</span></h1>
+        
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+        
+        <div class="message" id="countdown-message">
+            <p>Actually i don't know what to say, but i'm glad you're here</p>
+            <p>This project is not fully done still doing a lot of works behind this sana ma appreciate mo<span class="heart">🐾</span></p>
+        </div>
+        
+        <button class="proceed-button" id="proceed-button">Proceed</button>
+        
+        <div class="wait-message" id="wait-message">Mag hintay ka kaya!</div>
+    </div>
+
+    <script>
+        // Elements
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const proceedButton = document.getElementById('proceed-button');
+        const waitMessage = document.getElementById('wait-message');
+        const container = document.querySelector('.container');
+        
+        // Set target date (April 23)
+        const targetDate = new Date();
+        targetDate.setMonth(3); // April (0-indexed)
+        targetDate.setDate(23);
+        targetDate.setHours(0, 0, 0, 0);
+        
+        let countdownOver = false;
+        let buttonReady = false;
+        
+        // Button click handler
+        function handleButtonClick(e) {
+            if (buttonReady) {
+                // Redirect when ready
+                window.location.href = 'Main.html';
+                return;
+            }
+            
+            if (countdownOver) {
+                return;
+            }
+            
+            e.preventDefault();
+            
+            // Move button to random position
+            const containerRect = container.getBoundingClientRect();
+            const buttonRect = proceedButton.getBoundingClientRect();
+            const maxX = containerRect.width - buttonRect.width - 20;
+            const maxY = containerRect.height - buttonRect.height - 20;
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+            
+            proceedButton.style.position = 'absolute';
+            proceedButton.style.left = `${newX}px`;
+            proceedButton.style.top = `${newY}px`;
+            
+            // Show wait message
+            waitMessage.style.display = 'block';
+            setTimeout(() => {
+                waitMessage.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Set up event listeners
+        proceedButton.addEventListener('click', handleButtonClick);
+        proceedButton.addEventListener('touchstart', handleButtonClick);
+        
+        // Update countdown
+        function updateCountdown() {
+            const now = new Date();
+            const distance = targetDate - now;
+            
+            if (distance <= 0) {
+                countdownOver = true;
+                buttonReady = true;
+                
+                // Make button ready
+                proceedButton.textContent = "Continue";
+                proceedButton.classList.add('ready');
+                
+                // Reset button position
+                proceedButton.style.position = 'relative';
+                proceedButton.style.left = 'auto';
+                proceedButton.style.top = 'auto';
+                
+                // Start celebration
+                startConfetti();
+                return;
+            }
+            
+            // Update countdown numbers
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            daysEl.textContent = days.toString().padStart(2, '0');
+            hoursEl.textContent = hours.toString().padStart(2, '0');
+            minutesEl.textContent = minutes.toString().padStart(2, '0');
+            secondsEl.textContent = seconds.toString().padStart(2, '0');
+            
+            // Continue countdown
+            setTimeout(updateCountdown, 1000);
+        }
+        
+        // Start countdown
+        updateCountdown();
+        
+        // Confetti effect
+        const confettiColors = ['#4da6ff', '#66b3ff', '#88ccff', '#aaddff'];
+        let confettiInterval;
+        
+        function startConfetti() {
+            createConfettiPieces(30);
+            confettiInterval = setInterval(() => createConfettiPieces(5), 300);
+            setTimeout(() => clearInterval(confettiInterval), 10000);
+        }
+        
+        function createConfettiPieces(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.opacity = '0.8';
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg) scale(${Math.random() * 0.5 + 0.5})`;
+                    document.body.appendChild(confetti);
+                    
+                    const duration = Math.random() * 3 + 2;
+                    confetti.style.transition = `top ${duration}s linear, opacity ${duration}s ease-out`;
+                    
+                    setTimeout(() => {
+                        confetti.style.top = '110vh';
+                        confetti.style.opacity = '0';
+                    }, 10);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, duration * 1000);
+                }, Math.random() * 500);
+            }
+        }
+        
+        // For testing: Uncomment to simulate countdown end
+        // targetDate.setDate(targetDate.getDate() - 1);
+    </script>
+</body>
+</html>
