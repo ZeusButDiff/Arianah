@@ -88,7 +88,6 @@
             color: #555;
         }
         
-        /* Button Styles */
         .proceed-button {
             background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
             color: white;
@@ -167,8 +166,13 @@
     </style>
 </head>
 <body>
+    <!-- Audio Element (hidden, looped) -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="SpongeBob.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="container">
-        <h1>Ello eto yung ginagawa ko non tagal tagal nadin mag antay ka -Shen<span class="heart">🐾</span></h1>
+        <h1>Wait for it<span class="heart">🐾</span></h1>
         
         <div class="countdown">
             <div class="countdown-item">
@@ -190,7 +194,7 @@
         </div>
         
         <div class="message" id="countdown-message">
-            <p>Actually i don't know what to say, but i'm glad you're here</p>
+            <p>This is the only way i know :></p>
             <p>This project is not fully done still doing a lot of works behind this sana ma appreciate mo<span class="heart">🐾</span></p>
         </div>
         
@@ -200,7 +204,44 @@
     </div>
 
     <script>
-        // Elements
+        // ========================
+        // Enhanced Audio Handling
+        // ========================
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.volume = 1.0; // Full volume
+        let audioPlayed = false;
+
+        function playAudio() {
+            if (audioPlayed) return;
+            bgMusic.play()
+                .then(() => {
+                    audioPlayed = true;
+                    // Remove all listeners after successful play
+                    window.removeEventListener('click', playAudio);
+                    window.removeEventListener('touchstart', playAudio);
+                    window.removeEventListener('mousemove', playAudio);
+                    window.removeEventListener('scroll', playAudio);
+                    window.removeEventListener('keydown', playAudio);
+                })
+                .catch(e => console.log("Audio play requires interaction:", e));
+        }
+
+        // Try to autoplay immediately (works on some browsers)
+        playAudio();
+
+        // Fallback: Trigger on any interaction
+        const events = ['click', 'touchstart', 'mousemove', 'scroll', 'keydown'];
+        events.forEach(event => {
+            window.addEventListener(event, playAudio, { passive: true });
+        });
+
+        // Also trigger when proceed button is clicked
+        document.getElementById('proceed-button').addEventListener('click', playAudio);
+        document.getElementById('proceed-button').addEventListener('touchend', playAudio);
+
+        // ========================
+        // Original Countdown Code
+        // ========================
         const daysEl = document.getElementById('days');
         const hoursEl = document.getElementById('hours');
         const minutesEl = document.getElementById('minutes');
@@ -218,44 +259,34 @@
         let countdownOver = false;
         let buttonReady = false;
         
-        // Button click handler
         function handleButtonClick(e) {
             if (buttonReady) {
-                // Redirect when ready
                 window.location.href = 'Main.html';
                 return;
             }
             
-            if (countdownOver) {
-                return;
-            }
+            if (countdownOver) return;
             
             e.preventDefault();
             
-            // Move button to random position
             const containerRect = container.getBoundingClientRect();
             const buttonRect = proceedButton.getBoundingClientRect();
             const maxX = containerRect.width - buttonRect.width - 20;
             const maxY = containerRect.height - buttonRect.height - 20;
-            const newX = Math.random() * maxX;
-            const newY = Math.random() * maxY;
             
             proceedButton.style.position = 'absolute';
-            proceedButton.style.left = `${newX}px`;
-            proceedButton.style.top = `${newY}px`;
+            proceedButton.style.left = `${Math.random() * maxX}px`;
+            proceedButton.style.top = `${Math.random() * maxY}px`;
             
-            // Show wait message
             waitMessage.style.display = 'block';
             setTimeout(() => {
                 waitMessage.style.display = 'none';
             }, 3000);
         }
         
-        // Set up event listeners
         proceedButton.addEventListener('click', handleButtonClick);
         proceedButton.addEventListener('touchstart', handleButtonClick);
         
-        // Update countdown
         function updateCountdown() {
             const now = new Date();
             const distance = targetDate - now;
@@ -263,22 +294,15 @@
             if (distance <= 0) {
                 countdownOver = true;
                 buttonReady = true;
-                
-                // Make button ready
                 proceedButton.textContent = "Continue";
                 proceedButton.classList.add('ready');
-                
-                // Reset button position
                 proceedButton.style.position = 'relative';
                 proceedButton.style.left = 'auto';
                 proceedButton.style.top = 'auto';
-                
-                // Start celebration
                 startConfetti();
                 return;
             }
             
-            // Update countdown numbers
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -289,14 +313,11 @@
             minutesEl.textContent = minutes.toString().padStart(2, '0');
             secondsEl.textContent = seconds.toString().padStart(2, '0');
             
-            // Continue countdown
             setTimeout(updateCountdown, 1000);
         }
         
-        // Start countdown
         updateCountdown();
         
-        // Confetti effect
         const confettiColors = ['#4da6ff', '#66b3ff', '#88ccff', '#aaddff'];
         let confettiInterval;
         
@@ -332,9 +353,6 @@
                 }, Math.random() * 500);
             }
         }
-        
-        // For testing: Uncomment to simulate countdown end
-        // targetDate.setDate(targetDate.getDate() - 1);
     </script>
 </body>
 </html>
