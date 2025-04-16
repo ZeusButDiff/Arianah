@@ -50,6 +50,13 @@
             font-weight: 600;
         }
         
+        .timezone-note {
+            font-size: 0.8rem;
+            color: #6699cc;
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
+        
         .countdown {
             display: flex;
             justify-content: space-between;
@@ -129,6 +136,33 @@
             white-space: nowrap;
         }
         
+        .update-tracker {
+            background: rgba(255,255,255,0.7);
+            border-radius: 50px;
+            padding: 8px 15px;
+            display: inline-flex;
+            align-items: center;
+            margin: 15px auto 0;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 120, 200, 0.1);
+        }
+        
+        .tracker-icon {
+            margin-right: 8px;
+            font-size: 1.1rem;
+            animation: spin 4s linear infinite;
+        }
+        
+        .tracker-text {
+            color: #555;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         @keyframes fadeInOut {
             0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
             20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
@@ -172,7 +206,8 @@
     </audio>
 
     <div class="container">
-        <h1>Wait for it<span class="heart">🐾</span></h1>
+        <h1>You may now press the Proceed button :><span class="heart">🐾</span></h1>
+        <p class="timezone-note">Philippine Standard Time (UTC+8)</p>
         
         <div class="countdown">
             <div class="countdown-item">
@@ -199,6 +234,13 @@
         </div>
         
         <button class="proceed-button" id="proceed-button">Proceed</button>
+        
+        <div class="update-tracker">
+            <div class="tracker-icon">🔄</div>
+            <div class="tracker-text">
+                Last updated: <span id="last-updated-timer">just now</span>
+            </div>
+        </div>
         
         <div class="wait-message" id="wait-message">Mag hintay ka kaya!</div>
     </div>
@@ -240,7 +282,7 @@
         document.getElementById('proceed-button').addEventListener('touchend', playAudio);
 
         // ========================
-        // Original Countdown Code
+        // Updated Countdown for Philippines Timezone
         // ========================
         const daysEl = document.getElementById('days');
         const hoursEl = document.getElementById('hours');
@@ -249,15 +291,33 @@
         const proceedButton = document.getElementById('proceed-button');
         const waitMessage = document.getElementById('wait-message');
         const container = document.querySelector('.container');
+        const titleElement = document.querySelector('h1');
         
-        // Set target date (April 23)
-        const targetDate = new Date();
-        targetDate.setMonth(3); // April (0-indexed)
-        targetDate.setDate(23);
-        targetDate.setHours(0, 0, 0, 0);
+        // Set target date to April 23, 2025 at 12:00 AM Philippines Time (UTC+8)
+        const targetDate = new Date("2025-04-23T00:00:00+08:00");
         
         let countdownOver = false;
         let buttonReady = false;
+        
+        // Daily messages for the last 6 days
+        const dailyMessages = [
+            { daysLeft: 6, message: "Tagal tagal pa 🐾" },
+            { daysLeft: 5, message: "Buti naiisipan mo pang bumalik dito 🐾" },
+            { daysLeft: 4, message: "Oh ginagawa mo nanaman dito? tagal pa 🐾" },
+            { daysLeft: 3, message: "Bumalik pa talaga tatlong tulog pa 🐾" },
+            { daysLeft: 2, message: "Kinakabahan na si shen 🐾" },
+            { daysLeft: 1, message: "Balik kana lang bukas 🐾" },
+            { daysLeft: 0, message: "Onting hintay nalang 🐾" }
+        ];
+
+        function updateDailyMessage(daysLeft) {
+            if (daysLeft <= 6) {
+                const matchingMessage = dailyMessages.find(msg => msg.daysLeft === daysLeft);
+                if (matchingMessage) {
+                    titleElement.innerHTML = matchingMessage.message;
+                }
+            }
+        }
         
         function handleButtonClick(e) {
             if (buttonReady) {
@@ -288,8 +348,10 @@
         proceedButton.addEventListener('touchstart', handleButtonClick);
         
         function updateCountdown() {
+            // Get current time in PH timezone
             const now = new Date();
-            const distance = targetDate - now;
+            const phNow = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+            const distance = targetDate - phNow;
             
             if (distance <= 0) {
                 countdownOver = true;
@@ -313,11 +375,52 @@
             minutesEl.textContent = minutes.toString().padStart(2, '0');
             secondsEl.textContent = seconds.toString().padStart(2, '0');
             
+            // Update the daily message if <= 6 days left
+            updateDailyMessage(days);
+            
             setTimeout(updateCountdown, 1000);
         }
         
+        // Start countdown immediately
         updateCountdown();
         
+        // ========================
+        // Last Updated Timer
+        // ========================
+        let lastUpdateTime = new Date("2025-04-16T13:16:00+08:00"); // April 16, 2025 9:20 AM PHT
+        
+        function updateTimeSinceLastEdit() {
+            const now = new Date();
+            const diff = now - lastUpdateTime;
+            
+            // Calculate time units
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            
+            // Generate human-readable string
+            let timeString;
+            if (days > 0) {
+                timeString = `${days} day${days > 1 ? 's' : ''} ago`;
+            } else if (hours > 0) {
+                timeString = `${hours} hour${hours > 1 ? 's' : ''} ago`;
+            } else if (minutes > 0) {
+                timeString = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+            } else {
+                timeString = "just now";
+            }
+            
+            document.getElementById('last-updated-timer').textContent = timeString;
+        }
+        
+        // Initialize and update every minute
+        updateTimeSinceLastEdit();
+        setInterval(updateTimeSinceLastEdit, 60000);
+        
+        // ========================
+        // Confetti Effect
+        // ========================
         const confettiColors = ['#4da6ff', '#66b3ff', '#88ccff', '#aaddff'];
         let confettiInterval;
         
