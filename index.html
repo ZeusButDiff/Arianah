@@ -157,6 +157,134 @@
         .tracker-text {
             color: #555;
         }
+
+        /* Changelog Styles */
+        .changelog {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px auto 0;
+            max-width: 380px;
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 120, 200, 0.1);
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .changelog-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .changelog-title:before {
+            content: "📝";
+            margin-right: 8px;
+        }
+
+        .changelog-list {
+            list-style-type: none;
+            padding-left: 5px;
+        }
+
+        .changelog-item {
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+            padding-left: 15px;
+            position: relative;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .changelog-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #4da6ff;
+            font-weight: bold;
+        }
+
+        .changelog-date {
+            font-size: 0.7rem;
+            color: #888;
+            margin-left: 5px;
+        }
+
+        /* Feedback Form Styles */
+        .feedback-container {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px auto 0;
+            max-width: 380px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 120, 200, 0.1);
+        }
+
+        .feedback-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feedback-title:before {
+            content: "💌";
+            margin-right: 8px;
+        }
+
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feedback-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(0, 120, 200, 0.2);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            resize: none;
+            min-height: 80px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .feedback-input:focus {
+            outline: none;
+            border-color: #4da6ff;
+            box-shadow: 0 0 0 2px rgba(77, 166, 255, 0.2);
+        }
+
+        .feedback-button {
+            background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 105, 105, 0.3);
+        }
+
+        .feedback-success {
+            color: #4CAF50;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+        }
         
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -240,6 +368,28 @@
             <div class="tracker-text">
                 Last updated: <span id="last-updated-timer">just now</span>
             </div>
+        </div>
+
+        <!-- Changelog Section -->
+        <div class="changelog">
+            <div class="changelog-title">Project Changelog</div>
+            <ul class="changelog-list">
+                <li class="changelog-item">Added feedback form that emails responses <span class="changelog-date">- April 18, 2025</span></li>
+                <li class="changelog-item">Added changelog section to track updates <span class="changelog-date">- April 17, 2025</span></li>
+                <li class="changelog-item">Fixed countdown timer for Philippine timezone <span class="changelog-date">- April 17, 2025</span></li>
+                <li class="changelog-item">Added daily messages for last 6 days <span class="changelog-date">- April 16, 2025</span></li>
+                <li class="changelog-item">Initial countdown page creation <span class="changelog-date">- April 16, 2025</span></li>
+            </ul>
+        </div>
+
+        <!-- Feedback Form Section (placed below changelog as requested) -->
+        <div class="feedback-container">
+            <div class="feedback-title">If may feedbacks ka or gustong sabihin</div>
+            <form id="feedbackForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <textarea class="feedback-input" name="message" placeholder="Type your message here..." required></textarea>
+                <button type="submit" class="feedback-button">Send Message</button>
+                <div id="feedbackSuccess" class="feedback-success">Message sent successfully! 🎉</div>
+            </form>
         </div>
         
         <div class="wait-message" id="wait-message">Mag hintay ka naman ah</div>
@@ -387,7 +537,7 @@
         // ========================
         // Last Updated Timer
         // ========================
-        let lastUpdateTime = new Date("2025-04-17T18:57:00+08:00"); // April 16, 2025 9:20 AM PHT
+        let lastUpdateTime = new Date("2025-04-18T11:22:00+08:00"); // Update this timestamp when you make changes
         
         function updateTimeSinceLastEdit() {
             const now = new Date();
@@ -456,6 +606,37 @@
                 }, Math.random() * 500);
             }
         }
+
+        // ========================
+        // Feedback Form Handling
+        // ========================
+        const feedbackForm = document.getElementById('feedbackForm');
+        const feedbackSuccess = document.getElementById('feedbackSuccess');
+
+        feedbackForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Submit the form data to Formspree
+            fetch(feedbackForm.action, {
+                method: 'POST',
+                body: new FormData(feedbackForm),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    feedbackSuccess.style.display = 'block';
+                    feedbackForm.reset();
+                    setTimeout(() => {
+                        feedbackSuccess.style.display = 'none';
+                    }, 5000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
     </script>
 </body>
 </html>
