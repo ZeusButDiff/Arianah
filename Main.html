@@ -287,7 +287,10 @@
                 <span id="buttonStatus" class="button-status">(Locked until April 24, 2025 12:00 AM) Want to know the reason? Click the button above this text</span>
             </div>
             <button class="btn" id="sorryBtn">Sorry, I'm really busy right now. I'll check it later when I have some free time.</button>
-            <button class="btn" id="infoBtn">Shen’s daily journey with this project (Will be unlock tomorrow)</button>
+            <div class="button-container">
+                <button class="btn" id="infoBtn">Shen's daily journey with this project</button>
+                <span id="infoButtonStatus" class="button-status">(Locked until April 24, 2025 12:00 AM)</span>
+            </div>
         </div>
         
         <div class="signature">
@@ -299,7 +302,7 @@
     <div class="lock-overlay" id="lockOverlay"></div>
     <div class="lock-message" id="lockMessage">
         <h3>Please Wait</h3>
-        <p>The gift box will unlock on:</p>
+        <p>The content will unlock on:</p>
         <p><strong>April 24, 2025 at 12:00 AM (Philippines Time)</strong></p>
         <div class="countdown-timer" id="countdown"></div>
         <p>Happy birthday ulit! Ayoko munang dumagdag sa mga iniisip mo enjoyin mo lang birthday mo. Don't mind this for now, balik ka na lang if you have free time. –Shen</p>
@@ -376,12 +379,13 @@
             // Lock timer variables
             const thankYouBtn = document.getElementById('thankYouBtn');
             const buttonStatus = document.getElementById('buttonStatus');
+            const infoBtn = document.getElementById('infoBtn');
+            const infoButtonStatus = document.getElementById('infoButtonStatus');
             const lockMessage = document.getElementById('lockMessage');
             const lockOverlay = document.getElementById('lockOverlay');
             const countdownElement = document.getElementById('countdown');
             const closeLockMessage = document.getElementById('closeLockMessage');
             const sorryBtn = document.getElementById('sorryBtn');
-            const infoBtn = document.getElementById('infoBtn');
             const thankYouSound = document.getElementById('thankYouSound');
             
             // Set unlock time to April 24, 2025 12:00 AM Philippines time (UTC+8)
@@ -393,24 +397,29 @@
                 return now >= unlockTime;
             }
             
-            // Initialize button state
-            if (checkUnlockStatus()) {
-                buttonStatus.textContent = "(Locked until April 24, 2025 12:00 AM) You can now receive the gift box!";
-                buttonStatus.classList.add('unlocked');
-                countdownElement.textContent = "The gift box is now available!";
-            } else {
-                updateCountdown();
-                const countdownInterval = setInterval(function() {
-                    if (checkUnlockStatus()) {
-                        clearInterval(countdownInterval);
-                        buttonStatus.textContent = "(Locked until April 24, 2025 12:00 AM) You can now receive the gift box!";
-                        buttonStatus.classList.add('unlocked');
-                        countdownElement.textContent = "The gift box is now available!";
-                    } else {
-                        updateCountdown();
-                    }
-                }, 1000);
+            // Initialize button states
+            function updateButtonStates() {
+                if (checkUnlockStatus()) {
+                    buttonStatus.textContent = "You can now receive the gift box!";
+                    buttonStatus.classList.add('unlocked');
+                    infoButtonStatus.textContent = "You can now view Shen's journey!";
+                    infoButtonStatus.classList.add('unlocked');
+                    countdownElement.textContent = "The content is now available!";
+                } else {
+                    updateCountdown();
+                }
             }
+            
+            // Initialize on load
+            updateButtonStates();
+            const countdownInterval = setInterval(function() {
+                if (checkUnlockStatus()) {
+                    clearInterval(countdownInterval);
+                    updateButtonStates();
+                } else {
+                    updateCountdown();
+                }
+            }, 1000);
             
             function updateCountdown() {
                 const now = new Date().getTime();
@@ -426,11 +435,14 @@
                 countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
             }
             
+            function showLockMessage() {
+                lockOverlay.style.display = 'block';
+                lockMessage.style.display = 'block';
+            }
+            
             thankYouBtn.addEventListener('click', function() {
                 if (!checkUnlockStatus()) {
-                    // Show lock message
-                    lockOverlay.style.display = 'block';
-                    lockMessage.style.display = 'block';
+                    showLockMessage();
                     return;
                 }
                 
@@ -443,6 +455,19 @@
                 }, 1000);
             });
             
+            infoBtn.addEventListener('click', function() {
+                if (!checkUnlockStatus()) {
+                    showLockMessage();
+                    return;
+                }
+                
+                // When unlocked, go to Progress.html
+                createInfoStars();
+                setTimeout(() => {
+                    window.location.href = "Progress.html";
+                }, 1000);
+            });
+            
             closeLockMessage.addEventListener('click', function() {
                 lockOverlay.style.display = 'none';
                 lockMessage.style.display = 'none';
@@ -452,13 +477,6 @@
                 createSadCats();
                 setTimeout(() => {
                     window.location.href = "Busy.html";
-                }, 1000);
-            });
-            
-            infoBtn.addEventListener('click', function() {
-                createInfoStars();
-                setTimeout(() => {
-                    alert("Zeke whispers: 'This is a special birthday message from Shen! 🎂'");
                 }, 1000);
             });
             
