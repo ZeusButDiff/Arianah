@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Your Time</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Floating clock animation */
+        .clock {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            animation: floatClock 8s linear forwards;
+            z-index: -1;
+        }
+        
+        @keyframes floatClock {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
+                left: 10%;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+                left: 90%;
+            }
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+        }
+        
+        .image-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: gentleBounce 3s ease-in-out infinite;
+        }
+        
+        @keyframes gentleBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        #displayedImage {
+            max-width: 100%;
+            max-height: 60vh;
+            object-fit: contain;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        #displayedImage:hover {
+            transform: scale(1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .chat-bubble {
+            position: relative;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-radius: 25px;
+            padding: 25px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+            border: 2px solid #90caf9;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .chat-bubble::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 15px solid #bbdefb;
+        }
+        
+        .chat-text {
+            color: #333;
+            font-size: clamp(16px, 2.2vw, 18px);
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        .return-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00bbff, #0088ff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .return-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #0088ff, #0066cc);
+        }
+        
+        .signature {
+            margin-top: 15px;
+            font-style: italic;
+            color: #666;
+            font-size: 16px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2s forwards;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .chat-bubble {
+                padding: 18px;
+                width: 95%;
+            }
+            
+            .chat-text {
+                font-size: 15px;
+            }
+            
+            .return-btn {
+                padding: 10px 25px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img id="displayedImage" src="zeke4.png" alt="Zeke the cat">
+        </div>
+        
+        <div class="chat-bubble">
+            <p class="chat-text">Oh, if you're busy, it's alright I understand. Take your time, and feel free to return here whenever you have some free time or if you're curious about something. By the way, thank you for being here in the first place. I really appreciate your time. (Sorry if ang plain lang I ran out of time 😓)</p>
+        </div>
+        
+        <button class="return-btn" id="returnBtn">Return to Main Page</button>
+        <div class="signature">- Zeke 🐾</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create floating clocks
+            function createClocks() {
+                const clock = document.createElement('div');
+                clock.className = 'clock';
+                clock.textContent = '⏰';
+                
+                const size = 20 + Math.random() * 30;
+                const left = Math.random() * 100;
+                const duration = 5 + Math.random() * 5;
+                const delay = Math.random() * 3;
+                
+                clock.style.fontSize = `${size}px`;
+                clock.style.left = `${left}%`;
+                clock.style.animationDuration = `${duration}s`;
+                clock.style.animationDelay = `${delay}s`;
+                
+                document.body.appendChild(clock);
+                
+                setTimeout(() => {
+                    clock.remove();
+                }, (duration + delay) * 1000);
+            }
+            
+            // Start clock animation
+            setInterval(createClocks, 800);
+            
+            // Return button functionality
+            const returnBtn = document.getElementById('returnBtn');
+            returnBtn.addEventListener('click', function() {
+                // Add a nice transition effect
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    window.location.href = "Main.html";
+                }, 200);
+            });
+            
+            // Gentle hover effect for the image
+            const zekeImage = document.getElementById('displayedImage');
+            zekeImage.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.02) rotate(1deg)';
+            });
+            
+            zekeImage.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1) rotate(0)';
+            });
+        });
+    </script>
+</body>
+</html>
