@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Special Delivery from Zeke</title>
+    <title>Happy Birthday :></title>
     <style>
         body {
             margin: 0;
@@ -270,7 +270,14 @@
         
         <div class="speech-bubble">
             <div class="message">
-                Happy Birthday Arianah! 🎊, Shen asked me to deliver this gift box to you. I have no idea what's inside, though (A letter maybe?). Enjoy your day! Before clicking the buttons below Click me for a suprise make sure to turn up the volume! 🎉 (SCROLL DOWN IF THE BUTTONS ARE NOT VISIBLE :>)
+                Hoy Happy Birthday 🎊 Thank you for being my friend and for always listening to me yap about my life. I really appreciate your time.
+                I just want to say sorry if I ever bother you too much -Shen.
+                
+                By the way, Shen asked me to deliver this gift box to you. I have no idea what's inside (maybe a letter?).
+                Enjoy your day!
+                
+                Before clicking the buttons below, click me for a surprise and make sure your volume is up! 🎊
+                (Scroll down if the buttons aren't visible :>)
             </div>
         </div>
         
@@ -280,7 +287,7 @@
                 <span id="buttonStatus" class="button-status">(Locked until April 24, 2025 12:00 AM) Want to know the reason? Click the button above this text</span>
             </div>
             <button class="btn" id="sorryBtn">Sorry, I'm really busy right now. I'll check it later when I have some free time.</button>
-            <button class="btn" id="infoBtn">Curious about how Shen made this? Click here!</button>
+            <button class="btn" id="infoBtn">Shen’s daily journey with this project (Will be unlock tomorrow)</button>
         </div>
         
         <div class="signature">
@@ -444,7 +451,7 @@
             sorryBtn.addEventListener('click', function() {
                 createSadCats();
                 setTimeout(() => {
-                    alert("Zeke looks disappointed but nods understandingly.");
+                    window.location.href = "Busy.html";
                 }, 1000);
             });
             
@@ -502,13 +509,13 @@
             
             function createHearts() {
                 for (let i = 0; i < 20; i++) {
-                    createFloatingElement('🩵');
+                    createFloatingElement('🎁');
                 }
             }
             
             function createSadCats() {
                 for (let i = 0; i < 20; i++) {
-                    createFloatingElement('😿');
+                    createFloatingElement('🐾');
                 }
             }
             
