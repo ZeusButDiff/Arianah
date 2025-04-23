@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shen's Dev Journey</title>
+    <style>
+        /* === LIGHT BLUE THEME === */
+        body {
+            background: #e6f2ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        /* === BOOK DESIGN === */
+        .book {
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        /* === HEADER === */
+        .book-title {
+            text-align: center;
+            color: #2c7be5;
+            margin: 0 0 30px 0;
+            font-size: 28px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0ecff;
+        }
+
+        /* === DAY ENTRIES === */
+        .day-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .day-entry {
+            padding: 18px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid #2c7be5;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .day-entry:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .day-number {
+            font-weight: bold;
+            color: #2c7be5;
+            font-size: 17px;
+        }
+
+        .day-date {
+            color: #7a9ecc;
+            font-size: 14px;
+            background: #f0f7ff;
+            padding: 3px 8px;
+            border-radius: 12px;
+        }
+
+        .day-content {
+            color: #555;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        /* === EMOJI STYLES === */
+        .emoji {
+            font-size: 16px;
+            margin-right: 3px;
+        }
+
+        /* === DECORATIVE ELEMENTS === */
+        .page-corner {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            opacity: 0.1;
+            background: #2c7be5;
+        }
+
+        .top-left {
+            top: 0;
+            left: 0;
+            border-radius: 0 0 100% 0;
+        }
+
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            border-radius: 100% 0 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="book">
+        <div class="page-corner top-left"></div>
+        <div class="page-corner bottom-right"></div>
+        <h2 class="book-title">Dev Log/Progress ni Shen</h2>
+        <h2 class="book-title">Gift Box munaa bago ditooo</h2>
+        
+        <div class="day-list">
+            <!-- Day 1 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Ginagawa mo naman dito🤨</span>
+                    <span class="day-date">Nyenyenyenye</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">📃</span>Anyways eto yung everyday na ganap ko while doing this project please don't mind me talking to myself saka sorry ala talaga akong confidence sa sarili HAHAHAHA btw thank you for your time i appreciate it
+                </div>
+            </div>
+
+        <div class="day-list">
+            <!-- Day 1 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 1: Planning</span>
+                    <span class="day-date">March 24 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">📝</span>Creating Scratch planning everything
+                </div>
+            </div>
+            
+            <!-- Day 2 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 2: Learning</span>
+                    <span class="day-date">March 25 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">😭</span>Still figuring things out diko kasi gamay html/css
+                </div>
+            </div>
+            
+            <!-- Day 3 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 3: Stuck</span>
+                    <span class="day-date">March 26 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🤔</span>No progress diko alam pano sisimulan
+                </div>
+            </div>
+            
+            <!-- Day 4 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 4: Studying</span>
+                    <span class="day-date">March 27 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">📚</span>Still no progress inaaral kopa ehehehe
+                </div>
+            </div>
+            
+            <!-- Day 5 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 5: Progress!</span>
+                    <span class="day-date">March 28 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">😊</span>Medyo naiintindihan kona mga bagay bagay after few days of studying
+                </div>
+            </div>
+            
+            <!-- Day 6 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 6: Discovery</span>
+                    <span class="day-date">March 29 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🎮</span>Nalaman kona fav color nya and birthday nya, naudlot kasi nag laro kami roblox :>
+                </div>
+            </div>
+            
+            <!-- Day 7 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 7: Puyat</span>
+                    <span class="day-date">March 30 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">😴</span>Puyat 5 hours sleep 1 na kasi natulog but i have a lot of fun playing with her, need to start again can't fix the error on my code :<
+                </div>
+            </div>
+            
+            <!-- Day 8 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 8: Breakthrough</span>
+                    <span class="day-date">March 31 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🎉</span>Eto naka gawa na ng bago from scratch naayos na mga errors gawa konti bago pumasok :> update added some sound effects and new button color and little animation
+                </div>
+            </div>
+            
+            <!-- Day 9 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 9: Improvements</span>
+                    <span class="day-date">April 1 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">✨</span>added confetti effects improved colors, experimenting with stuffs hirap di ako creative eh but still trying everything i can to make it look better
+                    just came home from graduation kagandaaaa nyaaaaa, anyways added some happy birthday song when she interact with the website
+                </div>
+            </div>
+            
+            <!-- Day 10 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 10: Research</span>
+                    <span class="day-date">April 2 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">📱</span>Vivo Y20i ata phone nya need ko yan para sa screen size scaling ehehe, also added balloons sa background ng main site
+                </div>
+            </div>
+            
+            <!-- Day 11 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 11: Doubts</span>
+                    <span class="day-date">April 3 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">😔</span>eto kabado dko alam kung itutuloy kopa dunno if ma appreciate nya since di ako ganon ka creative sa mga bagay bagay
+                </div>
+            </div>
+            
+            <!-- Day 12 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 12: Optimization</span>
+                    <span class="day-date">April 4 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🔧</span>Improving the website performance making na sure tama lang yung scaling sa size ng phone nya :>
+                </div>
+            </div>
+            
+            <!-- Day 13 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 13: Blackout</span>
+                    <span class="day-date">April 5 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">⚡</span>WALANG PROGRESS BUONG ARAW WALANG KORYENTE mahalaga nakausap ko syaaa
+                </div>
+            </div>
+            
+            <!-- Day 14 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 14: Hesitation</span>
+                    <span class="day-date">April 6 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">😟</span>Sadly no progress self doubts again dko alam kung itutuloy kopa i just don't know also scared
+                </div>
+            </div>
+            
+            <!-- Day 15 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 15: Rest</span>
+                    <span class="day-date">April 7 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">😴</span>trying to organize my codes natulugan ko syaaa
+                </div>
+            </div>
+            
+            <!-- Day 16 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 16: Happy Day</span>
+                    <span class="day-date">April 8 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🎮</span>So happy we played games together :> nag puyatt naka dc kameeeeee so happy
+                </div>
+            </div>
+            
+            <!-- Day 17 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 17: Rest Day</span>
+                    <span class="day-date">April 9 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🛌</span>No progress this day i'm taking a rest from coding
+                </div>
+            </div>
+            
+            <!-- Day 18 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 18: Second Thoughts</span>
+                    <span class="day-date">April 10 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">😕</span>No progress again dadalawang isip ako kung itutuloy kopa eh hayop nayan sayang friendship
+                </div>
+            </div>
+            
+            <!-- Day 19 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 19: Heart Matters</span>
+                    <span class="day-date">April 11 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">💔</span>Tryiny kong tanungin about sa standards nya ewan daw 😭 pero alam ko sa sarili ko wala akong pag asa sa babaeng gaya nya eh😭 like she's too good for someone like me
+                </div>
+            </div>
+            
+            <!-- Day 20 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 20: Feelings</span>
+                    <span class="day-date">April 12 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">❤️</span>I don't expect her to feel the same but if i have a chance i want to wait for her tangina hindi na dev log to ah
+                </div>
+            </div>
+            
+            <!-- Day 21 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 21: Countdown</span>
+                    <span class="day-date">April 13 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">⏳</span>Eto dev log na talaga so i decided to add a count down page first parang ganon pero di nya mapipindot yung proceed hanggat nag cocountdown pa HAHAHA also created a new page eto kung san sya mapupunta pag pinindot nya na yung first button ayaw nya pa buksan yung link 😭
+                </div>
+            </div>
+            
+            <!-- Day 22 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 22: Music</span>
+                    <span class="day-date">April 14 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🎵</span>Changed some words also added background music to the countdown page HAHAHA
+                </div>
+            </div>
+            
+            <!-- Day 23 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 23: Planning</span>
+                    <span class="day-date">April 15 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🤔</span>eto nag iisip kung pano mas mapapaganda pa yung countdown page since di ako ganon ka creative planning to add Recent Update time like kung kelan yung recent changes ko ganon Kahit ala siyang pake HAHAHAH
+                </div>
+            </div>
+            
+            <!-- Day 24 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 24: Updates</span>
+                    <span class="day-date">April 16 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🔄</span>Added a system na kusang nagpapalit nung text na naka display everyday also added Last Update Time dko alam kung tinitignan nya pa eh na tripan kolang i add since mukang okay naman para pag naisipan nyang balikan diba nakikita nya na may progress
+                </div>
+            </div>
+            
+            <!-- Day 25 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 25: Lock Timer</span>
+                    <span class="day-date">April 17 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🔒</span>Nag lagay ako ng lock timer dun sa receive gift button kasi ayoko naman na iniiisip nya pa yon sa birthday nya may reason nadin don bat naka lock and makikita na din kelan ma uunlock
+                </div>
+            </div>
+            
+            <!-- Day 26 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 26: Changelog</span>
+                    <span class="day-date">April 18 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">📃</span>added changelog or dev log dun sa countdown page para kita nya yung progress if may balak man syang i check ganon also added feedback that will be directed to me if may feedbacks sya syempre
+                </div>
+            </div>
+            
+            <!-- Day 27 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 27: Burnout</span>
+                    <span class="day-date">April 19 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">😫</span>No progress Burnout mentally drained tapos akala nya pa ipagkakalat ko mga sinasabi nya saken 😭 sakanya lang naman ako madaldal
+                </div>
+            </div>
+            
+            <!-- Day 28 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 28: Exhausted</span>
+                    <span class="day-date">April 20 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">😩</span>No progress again potangina kapagod tong araw nato taking a rest
+                </div>
+            </div>
+            
+            <!-- Day 29 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 29: Contemplating</span>
+                    <span class="day-date">April 21 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">🤨</span>eto tangina dko alam kung itutuloy pa trying to thinkkk
+                </div>
+            </div>
+            
+            <!-- Day 30 -->
+            <div class="day-entry">
+                <div class="day-header">
+                    <span class="day-number">Day 30: Final Day</span>
+                    <span class="day-date">April 22 2025</span>
+                </div>
+                <div class="day-content">
+                    <span class="emoji">😅</span>Namamatay sa kaba but yeah if ala man akong chance sakanya all good lang that's what i expected saka tangina she is too good for someone like me HAHAHAHAH
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple animation for entries
+        document.querySelectorAll('.day-entry').forEach((entry, index) => {
+            entry.style.opacity = '0';
+            entry.style.transform = 'translateY(20px)';
+            entry.style.transition = `all 0.5s ease ${index * 0.1}s`;
+            
+            setTimeout(() => {
+                entry.style.opacity = '1';
+                entry.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
