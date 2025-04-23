@@ -23,6 +23,8 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            width: 100%;
+            max-width: 600px;
         }
 
         .gift-container {
@@ -160,6 +162,7 @@
             transition: all 1s ease 0.5s;
             position: relative;
             border: 1px solid #c1d3ff;
+            margin-bottom: 30px;
         }
 
         .letter.show {
@@ -269,6 +272,118 @@
             background-size: 15px 15px;
             border-radius: 6px;
         }
+
+        /* Response Form Styles */
+        .response-form {
+            width: 80%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: none;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 1s ease;
+            position: relative;
+            border: 1px solid #c1d3ff;
+            margin-top: 20px;
+        }
+
+        .response-form.show {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .response-form h3 {
+            color: #5a7ab8;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #c1d3ff;
+            border-radius: 6px;
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            min-height: 120px;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8ab4ff;
+            box-shadow: 0 0 0 3px rgba(138, 180, 255, 0.2);
+        }
+
+        .submit-btn {
+            background: linear-gradient(145deg, #5a7ab8, #8ab4ff);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            font-family: 'Georgia', serif;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(90, 122, 184, 0.3);
+        }
+
+        .form-message {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .success-message {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+        }
+
+        .scroll-prompt {
+            color: #5a7ab8;
+            font-style: italic;
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: center;
+            opacity: 0.7;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
     </style>
 </head>
 <body>
@@ -322,9 +437,9 @@
                 
                 <p>I know this might not be the perfect or right time to say something like this,
                     but feel free to say anything.
-                    I’m not expecting anything in return I just really want to express my feelings.
-                    You don’t have to like me back or anything, just say whatever’s on your mind.
-                    Don’t worry about hurting my feelings or making things awkward okay lang talaga.
+                    I'm not expecting anything in return I just really want to express my feelings.
+                    You don't have to like me back or anything, just say whatever's on your mind.
+                    Don't worry about hurting my feelings or making things awkward okay lang talaga.
                     
                     Alam ko, this could ruin our friendship or make things weird,
                     kaya nga wala rin akong lakas ng loob na sabihin to nang diretso.
@@ -334,10 +449,26 @@
                     
                     Thank you for being my inspiration sa lahat ng ginagawa ko araw araw.
                     </p>
+
+                    <p>Diko din alam sasabihin HAHAHAHA bala ka dyan take your time malamang after mo mabasa to tulog nako Good Nightt HAHAHAH kaw na bahala kung ano sasabihin mo</p>
                 
                 <div class="signature"><br>[SHEN]</div>
             </div>
         </div>
+
+        <div class="scroll-prompt" id="scrollPrompt">↓ Scroll down to respond ↓</div>
+
+        <!-- Response Form -->
+        <form id="responseForm" class="response-form" action="https://formspree.io/f/xdkerzoj" method="POST">
+            <h3>Up to you san mo mas gusto mag respond pede din here</h3>
+            <div class="form-group">
+                <label for="message">Ditooo:</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <input type="hidden" name="_subject" value="Response to Your Gift">
+            <button type="submit" class="submit-btn">Send Response</button>
+            <div id="formMessage" class="form-message"></div>
+        </form>
     </div>
 
     <div class="hearts" id="hearts"></div>
@@ -347,6 +478,9 @@
         const letter = document.getElementById('letter');
         const heartsContainer = document.getElementById('hearts');
         const clickPrompt = document.querySelector('.click-prompt');
+        const scrollPrompt = document.getElementById('scrollPrompt');
+        const responseForm = document.getElementById('responseForm');
+        const formMessage = document.getElementById('formMessage');
         
         giftBox.addEventListener('click', function() {
             this.classList.add('open');
@@ -354,7 +488,67 @@
             setTimeout(() => {
                 letter.classList.add('show');
                 createHearts();
+                
+                // Show scroll prompt after letter is shown
+                setTimeout(() => {
+                    scrollPrompt.style.display = 'block';
+                }, 2000);
             }, 800);
+        });
+
+        // Show form when user scrolls to bottom of letter
+        window.addEventListener('scroll', function() {
+            if (letter.classList.contains('show')) {
+                const letterBottom = letter.getBoundingClientRect().bottom;
+                const windowHeight = window.innerHeight;
+                
+                if (letterBottom < windowHeight + 100) {
+                    scrollPrompt.style.display = 'none';
+                    responseForm.classList.add('show');
+                }
+            }
+        });
+        
+        // Form submission
+        responseForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    formMessage.textContent = 'Your response has been sent! Thank you ❤️';
+                    formMessage.className = 'form-message success-message';
+                    responseForm.reset();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                formMessage.textContent = 'Oops! Something went wrong. Please try again later.';
+                formMessage.className = 'form-message error-message';
+            })
+            .finally(() => {
+                formMessage.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Response';
+                
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    formMessage.style.display = 'none';
+                }, 5000);
+            });
         });
         
         function createHearts() {
